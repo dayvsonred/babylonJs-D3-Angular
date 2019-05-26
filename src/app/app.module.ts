@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PatioSimplesComponent } from './patio-simples/patio-simples.component';
+import { EngineComponent } from './engine/engine.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PatioSimplesComponent
+    PatioSimplesComponent,
+    EngineComponent,
   ],
   imports: [
     BrowserModule,
