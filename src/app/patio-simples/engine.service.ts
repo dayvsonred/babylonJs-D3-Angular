@@ -20,6 +20,9 @@ export class EngineService {
   public corVerde : any;
   public corVermelho : any;
   public corRoxo : any;
+  public corVerdeB : any;
+  public corPreto : any;
+  
 
   constructor() {
   }
@@ -187,7 +190,7 @@ export class EngineService {
     
 
     // setTimeout(function(){  this.ExeIniAnimations(ponte); }, 4000);
-    setTimeout(async () => {this.AnimPonte_Mov(ponte);}, 4000);
+    setTimeout(async () => { this.SetCameraLookOBJ(ponte); this.AnimPonte_Mov(ponte);}, 3000);
     
     //   setTimeout(async () => {
     //     // var anim = this.scene.beginAnimation(box1, 0, 200, false);
@@ -200,24 +203,24 @@ export class EngineService {
 
 
   cores(){
-    var vermelho = new BABYLON.StandardMaterial("redMat", this.scene);
-    vermelho.emissiveColor = new BABYLON.Color3(1,0,0);
+    this.corVermelho = new BABYLON.StandardMaterial("redMat", this.scene);
+    this.corVermelho.emissiveColor = new BABYLON.Color3(1,0,0);
  
-    var verde = new BABYLON.StandardMaterial("verdeMat", this.scene);
-    verde.emissiveColor = new BABYLON.Color3(0,1,0);
+    this.corVerde = new BABYLON.StandardMaterial("verdeMat", this.scene);
+    this.corVerde.emissiveColor = new BABYLON.Color3(0,1,0);
  
-    var verde2 = new BABYLON.StandardMaterial("verde2Mat", this.scene);
-    verde2.emissiveColor = new BABYLON.Color3((57/255),(203/255),(64/255));
+    this.corVerdeB = new BABYLON.StandardMaterial("verde2Mat", this.scene);
+    this.corVerdeB.emissiveColor = new BABYLON.Color3((57/255),(203/255),(64/255));
  
-    var azul = new BABYLON.StandardMaterial("azulMat", this.scene);
-    azul.emissiveColor = new BABYLON.Color3((15/255),(13/255),(243/255));
+    this.corAzul = new BABYLON.StandardMaterial("azulMat", this.scene);
+    this.corAzul.emissiveColor = new BABYLON.Color3((15/255),(13/255),(243/255));
  
     this.corAmarelo = new BABYLON.StandardMaterial("amareloMat", this.scene);
     this.corAmarelo.emissiveColor = new BABYLON.Color3((210/255),(181/255),0);
  
  
-    var preto = new BABYLON.StandardMaterial("pretoMat", this.scene);
-    preto.emissiveColor = new BABYLON.Color3((18/255),(10/255),(44/255));
+    this.corPreto = new BABYLON.StandardMaterial("pretoMat", this.scene);
+    this.corPreto.emissiveColor = new BABYLON.Color3((18/255),(10/255),(44/255));
   }
 
 
@@ -319,11 +322,20 @@ export class EngineService {
   }
 
 
+
+  SetCameraLookOBJ(OBJ){
+    /*****************SET TARGET FOR CAMERA************************/ 
+    this.camera.lockedTarget = OBJ;
+    /**************************************************************/
+  }
+
+
+
   Ponte(){
 
     let ponte = BABYLON.Mesh.CreateBox('PontBase', 3,  this.scene);
     ponte.position.x = 1;
-    ponte.position.y = 7;
+    ponte.position.y = 4;
     ponte.position.z = 0;
     ponte.material = this.corAmarelo;
 
@@ -359,33 +371,27 @@ export class EngineService {
     //At the animation key 100, the value of scaling is "1"
     keys.push({
         frame: 100,
-        value: -30
+        value: -31
     });
 
     animationBox.setKeys(keys); 
-
-
-
-    var animationBox2 = new BABYLON.Animation("PonteAnimation2", "position.z", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-    // Animation keys
-    var keys2 = [];
-    keys2.push({ frame: 0,value: 0 });
-    keys2.push({   frame: 50,  value: 15 }); 
-    keys2.push({ frame: 100, value: 30 });
-
-    animationBox2.setKeys(keys2);
-
     i.animations.push(animationBox);
-    i.animations.push(animationBox2); 
 
 
 
+    // var animationBox2 = new BABYLON.Animation("PonteAnimation2", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+    // BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    // // Animation keys
+    // var keys2 = [];
+    // keys2.push({ frame: 100,value: 0 });
+    // keys2.push({   frame: 150,  value: 15 }); 
+    // keys2.push({ frame: 200, value: 30 });
 
+    // animationBox2.setKeys(keys2);
+    // i.animations.push(animationBox2); 
 
-
+ 
     // var anim = this.scene.beginAnimation(i, 0, 200, false);
-
     // console.log("before");
     // await anim.waitAsync();
     // console.log("after");
@@ -398,7 +404,7 @@ export class EngineService {
       console.log("before");
       await anim.waitAsync();
       // i.position.x = -30;
-      // this.AnimPonte_Mov_2(i);
+      this.AnimPonte_Mov_2(i);
       console.log("after");
     });
 
@@ -408,19 +414,18 @@ export class EngineService {
 
   AnimPonte_Mov_2(i){
 
-   var animationBox = new BABYLON.Animation("PonteAnimation2", "position.z", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+   var animationBox = new BABYLON.Animation("PonteAnimation2", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
    // Animation keys
    var keys = [];
-   keys.push({ frame: 0,value: 0 });
-   keys.push({   frame: 50,  value: 15 }); 
-   keys.push({ frame: 100, value: 30 });
+   keys.push({ frame: 100,value: 0 });
+   keys.push({ frame: 150,  value: 15 }); 
+   keys.push({ frame: 200, value: 32 });
 
    animationBox.setKeys(keys);
-
    i.animations.push(animationBox);
 
-   var anim = this.scene.beginAnimation(i, 0, 100, false);
+   var anim = this.scene.beginAnimation(i, 100, 200, false);
 
    // console.log("before");
    // await anim.waitAsync();
@@ -437,7 +442,7 @@ export class EngineService {
    * @param Coluna coluna da matrix number ini 0
    * @param Linha linha da matrix
    */
-  CriarCilindrosPosIni(Coluna, Linha){
+  CriarCilindrosPosIni(Coluna, Linha, material = false){
 
     let posX = 35; // move para esqueda direita
     let posY = 1; // move para cima e baixo
@@ -457,6 +462,10 @@ export class EngineService {
     cylindro1.position.x = posX;
     cylindro1.position.y = posY;
     cylindro1.position.z = posZ;
+
+    if(material != false){
+          cylindro1.material = material;
+    }
 
 
 
