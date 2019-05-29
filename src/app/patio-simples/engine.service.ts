@@ -16,12 +16,23 @@ export class EngineService {
   public sphere: BABYLON.Mesh;
   public terra: BABYLON.Mesh;
   public corAmarelo : any;
+  public corAmareloB : any;
   public corAzul : any;
   public corVerde : any;
   public corVermelho : any;
   public corRoxo : any;
   public corVerdeB : any;
   public corPreto : any;
+  public TextureBroze01 : any;
+  public TextureBroze02 : any;
+  public TextureBroze03 : any;
+  public TextureMetal01 : any;
+  public TextureMetal02 : any;
+  public TextureMetal03 : any;
+  public TextureMetal04 : any;
+  public TextureMetal05 : any;
+  public TextureMetal06 : any;
+
   
 
   constructor() {
@@ -111,17 +122,16 @@ export class EngineService {
 
 
 
-    // this.Texturas();
-
-    // this.cores();
+    this.TexturasCreate();
+    this.cores();
     this.Terra();
  
     
     
-    this.CriarCilindrosPosIni(0,0);this.CriarCilindrosPosIni(1,0);this.CriarCilindrosPosIni(2,0);this.CriarCilindrosPosIni(3,0);
-    this.CriarCilindrosPosIni(0,1);this.CriarCilindrosPosIni(1,1);this.CriarCilindrosPosIni(2,1);this.CriarCilindrosPosIni(3,1);
-    this.CriarCilindrosPosIni(0,2);this.CriarCilindrosPosIni(1,2);this.CriarCilindrosPosIni(2,2);this.CriarCilindrosPosIni(3,2);
-    this.CriarCilindrosPosIni(0,3);this.CriarCilindrosPosIni(1,3);this.CriarCilindrosPosIni(2,3);this.CriarCilindrosPosIni(3,3);
+    this.CriarCilindrosPosIni(0,0, this.corVermelho);   this.CriarCilindrosPosIni(1,0, this.TextureBroze02);this.CriarCilindrosPosIni(2,0);this.CriarCilindrosPosIni(3,0, this.TextureMetal01);
+    this.CriarCilindrosPosIni(0,1);                 this.CriarCilindrosPosIni(1,1, this.TextureBroze03);this.CriarCilindrosPosIni(2,1, this.TextureMetal05);this.CriarCilindrosPosIni(3,1, this.TextureMetal02);
+    this.CriarCilindrosPosIni(0,2,this.corAmarelo); this.CriarCilindrosPosIni(1,2);this.CriarCilindrosPosIni(2,2);this.CriarCilindrosPosIni(3,2, this.TextureMetal03);
+    this.CriarCilindrosPosIni(0,3,this.TextureBroze01);    this.CriarCilindrosPosIni(1,3);this.CriarCilindrosPosIni(2,3);this.CriarCilindrosPosIni(3,3, this.TextureMetal04);
     
 
     for (let index = 6; index < 11; index++) {
@@ -215,8 +225,8 @@ export class EngineService {
     this.corAzul = new BABYLON.StandardMaterial("azulMat", this.scene);
     this.corAzul.emissiveColor = new BABYLON.Color3((15/255),(13/255),(243/255));
  
-    this.corAmarelo = new BABYLON.StandardMaterial("amareloMat", this.scene);
-    this.corAmarelo.emissiveColor = new BABYLON.Color3((210/255),(181/255),0);
+    this.corAmareloB = new BABYLON.StandardMaterial("amareloMat", this.scene);
+    this.corAmareloB.emissiveColor = new BABYLON.Color3((210/255),(181/255),0);
  
  
     this.corPreto = new BABYLON.StandardMaterial("pretoMat", this.scene);
@@ -293,15 +303,6 @@ export class EngineService {
 
 
 
-  Texturas(){
-    var texturTerrono = new BABYLON.StandardMaterial("ground",  this.scene);
-    texturTerrono.diffuseTexture = new BABYLON.Texture("assets/textures/ground.jpg",  this.scene);
-     //    texturTerrono.diffuseColor = new Color3(1, 0, 0);
-     texturTerrono.diffuseTexture.wrapU = 6;
-     texturTerrono.diffuseTexture.wrapV = 6;
-     texturTerrono.specularColor = new BABYLON.Color3(0, 0, 0)
-  }
-
   /** Criando terra 
   * criação simples falta add limit na camera para ver apenasate a base
   */
@@ -309,7 +310,7 @@ export class EngineService {
 
     // texturas
    var texturTerrono = new BABYLON.StandardMaterial("ground",  this.scene);
-   texturTerrono.diffuseTexture = new BABYLON.Texture("assets/textures/ground.jpg",  this.scene);
+   texturTerrono.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_ConcretePlates0007_1_seamless_S.jpg",  this.scene);
     //    texturTerrono.diffuseColor = new Color3(1, 0, 0);
     texturTerrono.diffuseTexture.wrapU = 6;
     texturTerrono.diffuseTexture.wrapV = 6;
@@ -442,7 +443,7 @@ export class EngineService {
    * @param Coluna coluna da matrix number ini 0
    * @param Linha linha da matrix
    */
-  CriarCilindrosPosIni(Coluna, Linha, material = false){
+  CriarCilindrosPosIni(Coluna, Linha, material: any = false){
 
     let posX = 35; // move para esqueda direita
     let posY = 1; // move para cima e baixo
@@ -470,6 +471,83 @@ export class EngineService {
 
 
 
+  }
+
+
+
+  
+
+  Texturas(){
+    var texturTerrono = new BABYLON.StandardMaterial("ground",  this.scene);
+    texturTerrono.diffuseTexture = new BABYLON.Texture("assets/textures/ground.jpg",  this.scene);
+     //    texturTerrono.diffuseColor = new Color3(1, 0, 0);
+     texturTerrono.diffuseTexture.wrapU = 6;
+     texturTerrono.diffuseTexture.wrapV = 6;
+     texturTerrono.specularColor = new BABYLON.Color3(0, 0, 0)
+  }
+
+
+  
+
+  TexturasCreate(){
+    this.TextureBroze01 = new BABYLON.StandardMaterial("TextureBroze01",  this.scene);
+    this.TextureBroze01.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_BronzeCopper0002_1_seamless_S.jpg",  this.scene);
+     //    texturTerrono.diffuseColor = new Color3(1, 0, 0);
+     this.TextureBroze01.diffuseTexture.wrapU = 6;
+     this.TextureBroze01.diffuseTexture.wrapV = 6;
+     this.TextureBroze01.specularColor = new BABYLON.Color3(0, 0, 0);
+
+
+
+     this.TextureBroze02 = new BABYLON.StandardMaterial("TextureBroze02",  this.scene);
+     this.TextureBroze02.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_BronzeCopper0035_1_seamless_S.jpg",  this.scene);
+     this.TextureBroze02.diffuseTexture.wrapU = 6;
+     this.TextureBroze02.diffuseTexture.wrapV = 6;
+     this.TextureBroze02.specularColor = new BABYLON.Color3(0, 0, 0)
+
+
+     this.TextureBroze03 = new BABYLON.StandardMaterial("TextureBroze03",  this.scene);
+     this.TextureBroze03.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_BronzeCopper0041_1_seamless_S.jpg",  this.scene);
+     this.TextureBroze03.diffuseTexture.wrapU = 6;
+     this.TextureBroze03.diffuseTexture.wrapV = 6;
+     this.TextureBroze03.specularColor = new BABYLON.Color3(0, 0, 0);
+
+     this.TextureMetal01 = new BABYLON.StandardMaterial("TextureMetal01",  this.scene);
+     this.TextureMetal01.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_MetalBare0094_S.jpg",  this.scene);
+     this.TextureMetal01.diffuseTexture.wrapU = 6;
+     this.TextureMetal01.diffuseTexture.wrapV = 6;
+     this.TextureMetal01.specularColor = new BABYLON.Color3(0, 0, 0);
+
+     this.TextureMetal02 = new BABYLON.StandardMaterial("TextureMetal02",  this.scene);
+     this.TextureMetal02.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_MetalBare0144_1_seamless_S.jpg",  this.scene);
+     this.TextureMetal02.diffuseTexture.wrapU = 6;
+     this.TextureMetal02.diffuseTexture.wrapV = 6;
+     this.TextureMetal02.specularColor = new BABYLON.Color3(0, 0, 0);
+
+     this.TextureMetal03 = new BABYLON.StandardMaterial("TextureMetal03",  this.scene);
+     this.TextureMetal03.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_MetalBare0144_2_S.jpg",  this.scene);
+     this.TextureMetal03.diffuseTexture.wrapU = 6;
+     this.TextureMetal03.diffuseTexture.wrapV = 6;
+     this.TextureMetal03.specularColor = new BABYLON.Color3(0, 0, 0);
+
+     this.TextureMetal04 = new BABYLON.StandardMaterial("TextureMetal04",  this.scene);
+     this.TextureMetal04.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_MetalBare0196_1_S.jpg",  this.scene);
+     this.TextureMetal04.diffuseTexture.wrapU = 6;
+     this.TextureMetal04.diffuseTexture.wrapV = 6;
+     this.TextureMetal04.specularColor = new BABYLON.Color3(0, 0, 0);
+
+     this.TextureMetal05 = new BABYLON.StandardMaterial("TextureMetal05",  this.scene);
+     this.TextureMetal05.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_MetalBare0200_5_S.jpg",  this.scene);
+     this.TextureMetal05.diffuseTexture.wrapU = 6;
+     this.TextureMetal05.diffuseTexture.wrapV = 6;
+     this.TextureMetal05.specularColor = new BABYLON.Color3(0, 0, 0);
+
+
+     this.TextureMetal06 = new BABYLON.StandardMaterial("TextureMetal06",  this.scene);
+     this.TextureMetal06.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_MetalPainted0187_1_S.jpg",  this.scene);
+     this.TextureMetal06.diffuseTexture.wrapU = 6;
+     this.TextureMetal06.diffuseTexture.wrapV = 6;
+     this.TextureMetal06.specularColor = new BABYLON.Color3(0, 0, 0);
   }
 
 
