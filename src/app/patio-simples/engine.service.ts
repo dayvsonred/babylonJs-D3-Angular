@@ -33,6 +33,15 @@ export class EngineService {
   public TextureMetal05 : any;
   public TextureMetal06 : any;
 
+  public PonteObj : BABYLON.Mesh;
+  public PonteX : any;
+  public PonteY : any;
+  public PonteZ : any;
+
+  public CilMovX : any;
+  public CilMovY : any;
+  public CilMovZ : any;
+
   
 
   constructor() {
@@ -196,11 +205,11 @@ export class EngineService {
 
   ExeIniAnimations(){
 
-    let ponte  = this.Ponte();
+    this.PonteObj  = this.Ponte();
     
 
     // setTimeout(function(){  this.ExeIniAnimations(ponte); }, 4000);
-    setTimeout(async () => { this.SetCameraLookOBJ(ponte); this.AnimPonte_Mov(ponte);}, 3000);
+    setTimeout(async () => { this.SetCameraLookOBJ(this.PonteObj); this.AnimPonte_Mov_Go_Cilinder_Horizont(this.PonteObj);}, 3000);
     
     //   setTimeout(async () => {
     //     // var anim = this.scene.beginAnimation(box1, 0, 200, false);
@@ -339,100 +348,11 @@ export class EngineService {
     ponte.position.y = 4;
     ponte.position.z = 0;
     ponte.material = this.corAmarelo;
-
+  
     return ponte;
-    // coluna4.material = amarelo;
-
-
-
+    // coluna4.material = amarelo; 
   }
 
-  /** Move a ponte para uma determinada posicao 
-   * 
-  */
-  AnimPonte_Mov(i){
-
-     //Create a scaling animation at 30 FPS
-    var animationBox = new BABYLON.Animation("PonteAnimation", "position.x", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-    // Animation keys
-    var keys = [];
-    //At the animation key 0, the value of scaling is "1"
-    keys.push({
-        frame: 0,
-        value: 1
-    });
-
-    //At the animation key 20, the value of scaling is "0.2"
-    keys.push({
-        frame: 50,
-        value: -15
-    });
-
-    //At the animation key 100, the value of scaling is "1"
-    keys.push({
-        frame: 100,
-        value: -31
-    });
-
-    animationBox.setKeys(keys); 
-    i.animations.push(animationBox);
-
-
-
-    // var animationBox2 = new BABYLON.Animation("PonteAnimation2", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-    // BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-    // // Animation keys
-    // var keys2 = [];
-    // keys2.push({ frame: 100,value: 0 });
-    // keys2.push({   frame: 150,  value: 15 }); 
-    // keys2.push({ frame: 200, value: 30 });
-
-    // animationBox2.setKeys(keys2);
-    // i.animations.push(animationBox2); 
-
- 
-    // var anim = this.scene.beginAnimation(i, 0, 200, false);
-    // console.log("before");
-    // await anim.waitAsync();
-    // console.log("after");
-
-    
-    setTimeout(async () => {
-      var anim = this.scene.beginAnimation(i, 0, 100, false); 
-      
-
-      console.log("before");
-      await anim.waitAsync();
-      // i.position.x = -30;
-      this.AnimPonte_Mov_2(i);
-      console.log("after");
-    });
-
-  }
-
-
-
-  AnimPonte_Mov_2(i){
-
-   var animationBox = new BABYLON.Animation("PonteAnimation2", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-                                                                   BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-   // Animation keys
-   var keys = [];
-   keys.push({ frame: 100,value: 0 });
-   keys.push({ frame: 150,  value: 15 }); 
-   keys.push({ frame: 200, value: 32 });
-
-   animationBox.setKeys(keys);
-   i.animations.push(animationBox);
-
-   var anim = this.scene.beginAnimation(i, 100, 200, false);
-
-   // console.log("before");
-   // await anim.waitAsync();
-   // console.log("after");
-
- }
 
 
 
@@ -548,6 +468,136 @@ export class EngineService {
      this.TextureMetal06.diffuseTexture.wrapU = 6;
      this.TextureMetal06.diffuseTexture.wrapV = 6;
      this.TextureMetal06.specularColor = new BABYLON.Color3(0, 0, 0);
+  }
+
+
+
+  
+  /** Move a ponte para uma determinada posicao 
+   * 
+  */
+ AnimPonte_Mov_Go_Cilinder_Horizont(i){ 
+  //Create a scaling animation at 30 FPS
+ var animationBox = new BABYLON.Animation("PonteAnimation", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                 BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+ // Animation keys
+ var keys = [];
+ //At the animation key 0, the value of scaling is "1"
+ keys.push({ frame: 0, value: 1 }); 
+ //At the animation key 20, the value of scaling is "0.2"
+ keys.push({ frame: 50, value: -15 }); 
+ //At the animation key 100, the value of scaling is "1"
+ keys.push({ frame: 100,  value: -31 });
+
+ animationBox.setKeys(keys); 
+ i.animations.push(animationBox);
+
+ setTimeout(async () => {
+   var anim = this.scene.beginAnimation(i, 0, 100, false);  
+  //  console.log("before");
+   await anim.waitAsync();
+   // i.position.x = -30;
+   this.AnimPonte_Mov_Go_Cilinder_Vertica(i);
+  //  console.log("after");
+ });
+
+} 
+
+AnimPonte_Mov_Go_Cilinder_Vertica(i){
+
+var animationBox = new BABYLON.Animation("PonteAnimation2", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+// Animation keys
+var keys = [];
+keys.push({ frame: 100,value: 0 });
+keys.push({ frame: 150,  value: 15 }); 
+keys.push({ frame: 200, value: 32 });
+
+animationBox.setKeys(keys);
+i.animations.push(animationBox); 
+// var anim = this.scene.beginAnimation(i, 100, 200, false);
+  setTimeout(async () => {
+    var anim = this.scene.beginAnimation(i, 100, 200, false);    
+    await anim.waitAsync(); 
+    this.PonteObj.position.x = -31;
+    this.PonteObj.position.z = 32;
+    setTimeout(async () => { this.AnimPonte_Mov_Go_Up(i); }, 2000 );
+   
+  });
+
+}
+
+
+AnimPonte_Mov_Go_Up(i){
+  let animationBox = new BABYLON.Animation("PonteAnimation3", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                  BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+  // Animation keys
+  let ini = this.PonteObj.position.y; 
+  let fimUp = ini + 8;
+  let met = fimUp/2;
+  let keys = [];
+  keys.push({ frame: 0, value: ini });
+  keys.push({ frame: 50, value: met }); 
+  keys.push({ frame: 200, value: fimUp });
+  animationBox.setKeys(keys);
+  i.animations = [];
+  i.animations.push(animationBox); 
+  // var anim = this.scene.beginAnimation(i, 100, 200, false); 
+    //Move ponte para pontoVazio
+    setTimeout(async () => {
+      let anim = this.scene.beginAnimation(i, 0, 200, false);   
+      await anim.waitAsync();
+      this.AnimPonte_Mov_Go_Vazio(i)
+    });
+  
+  }
+
+
+
+
+AnimPonte_Mov_Go_Vazio(i){
+  let animationBox = new BABYLON.Animation("PonteAnimation4", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                  BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+  // Animation keys
+  let keys = [];
+  let ini = this.PonteObj.position.x;  let fim = ini + 60; let met = fim/2;
+  keys.push({ frame: 0, value: ini });
+  keys.push({ frame: 50, value: met }); 
+  keys.push({ frame: 100, value: fim });
+  animationBox.setKeys(keys);
+  i.animations = [];
+  i.animations.push(animationBox); 
+  // var anim = this.scene.beginAnimation(i, 100, 200, false); 
+    //Move ponte para pontoVazio
+    setTimeout(async () => {
+      let anim = this.scene.beginAnimation(i, 0, 100, false);   
+      await anim.waitAsync();
+      this.AnimPonte_Mov_Go_Donw(i); 
+    });
+  
+  }
+
+  
+  AnimPonte_Mov_Go_Donw(i){
+  let animationBox = new BABYLON.Animation("PonteAnimation5", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                  BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+  // Animation keys
+  let keys = [];
+  let ini = this.PonteObj.position.y;  let fim = ini - 8; let met = fim/2;
+  keys.push({ frame: 0, value: ini });
+  keys.push({ frame: 50, value: met }); 
+  keys.push({ frame: 100, value: fim });
+  animationBox.setKeys(keys);
+  i.animations = [];
+  i.animations.push(animationBox); 
+  // var anim = this.scene.beginAnimation(i, 100, 200, false); 
+    //Move ponte para pontoVazio
+    setTimeout(async () => {
+      let anim = this.scene.beginAnimation(i, 0, 100, false);   
+      await anim.waitAsync();
+      // this.AnimPonte_Mov_Go_Donw(i); 
+    });
+  
   }
 
 
