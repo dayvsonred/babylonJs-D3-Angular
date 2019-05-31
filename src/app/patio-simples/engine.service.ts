@@ -15,6 +15,7 @@ export class EngineService {
 
   public sphere: BABYLON.Mesh;
   public terra: BABYLON.Mesh;
+  public SeletcCylindro: BABYLON.Mesh;
   public corAmarelo : any;
   public corAmareloB : any;
   public corAzul : any;
@@ -96,27 +97,27 @@ export class EngineService {
     this._light.specular = new BABYLON.Color3(0, 1, 0); 
 
 
-    // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
-    this.sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+    // // create a built-in "sphere" shape; its constructor takes 4 params: name, subdivisions, radius, scene
+    // this.sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
 
-    // create the material with its texture for the sphere and assign it to the sphere
+    // // create the material with its texture for the sphere and assign it to the sphere
     let spherMaterial = new BABYLON.StandardMaterial('sun_surface', this.scene);
     spherMaterial.diffuseTexture = new BABYLON.Texture('assets/textures/sun.jpg', this.scene);
-    this.sphere.material = spherMaterial;
+    // this.sphere.material = spherMaterial;
     this.corAmarelo = spherMaterial;
 
-    // move the sphere upward 1/2 of its height
-    this.sphere.position.y = 1;
+    // // move the sphere upward 1/2 of its height
+    // this.sphere.position.y = 1;
 
-    // simple rotation along the y axis
-    let angle = 0.02;
-    this.scene.registerAfterRender(() => {
-      this.sphere.rotate (
-        new BABYLON.Vector3(0, 1, 0),
-        0.02,
-        BABYLON.Space.LOCAL
-      );
-    });
+    // // simple rotation along the y axis
+    // let angle = 0.02;
+    // this.scene.registerAfterRender(() => {
+    //   this.sphere.rotate (
+    //     new BABYLON.Vector3(0, 1, 0),
+    //     0.02,
+    //     BABYLON.Space.LOCAL
+    //   );
+    // });
   
     // generates the world x-y-z axis for better understanding
     //this.showWorldAxis(8);
@@ -138,9 +139,9 @@ export class EngineService {
     
     
     this.CriarCilindrosPosIni(0,0, this.corVermelho);   this.CriarCilindrosPosIni(1,0, this.TextureBroze02);this.CriarCilindrosPosIni(2,0);this.CriarCilindrosPosIni(3,0, this.TextureMetal01);
-    this.CriarCilindrosPosIni(0,1);                 this.CriarCilindrosPosIni(1,1, this.TextureBroze03);this.CriarCilindrosPosIni(2,1, this.TextureMetal05);this.CriarCilindrosPosIni(3,1, this.TextureMetal02);
-    this.CriarCilindrosPosIni(0,2,this.corAmarelo); this.CriarCilindrosPosIni(1,2);this.CriarCilindrosPosIni(2,2);this.CriarCilindrosPosIni(3,2, this.TextureMetal03);
-    this.CriarCilindrosPosIni(0,3,this.TextureBroze01);    this.CriarCilindrosPosIni(1,3);this.CriarCilindrosPosIni(2,3);this.CriarCilindrosPosIni(3,3, this.TextureMetal04);
+    this.CriarCilindrosPosIni(0,1);  this.CriarCilindrosPosIni(1,1, this.TextureBroze03);this.CriarCilindrosPosIni(2,1, this.TextureMetal05);this.CriarCilindrosPosIni(3,1, this.TextureMetal02);
+    this.CriarCilindrosPosIni(0,2,this.corAmarelo);       this.CriarCilindrosPosIni(1,2, this.TextureMetal04,true);this.CriarCilindrosPosIni(2,2);this.CriarCilindrosPosIni(3,2, this.TextureMetal03);
+    this.CriarCilindrosPosIni(0,3,this.TextureBroze01);    this.CriarCilindrosPosIni(1,3);this.CriarCilindrosPosIni(2,3);this.CriarCilindrosPosIni(3,3 );
     
 
     for (let index = 6; index < 11; index++) {
@@ -319,7 +320,7 @@ export class EngineService {
 
     // texturas
    var texturTerrono = new BABYLON.StandardMaterial("ground",  this.scene);
-   texturTerrono.diffuseTexture = new BABYLON.Texture("assets/textures/TexturesCom_ConcretePlates0007_1_seamless_S.jpg",  this.scene);
+   texturTerrono.diffuseTexture = new BABYLON.Texture("assets/textures/reflectivity.png",  this.scene);
     //    texturTerrono.diffuseColor = new Color3(1, 0, 0);
     texturTerrono.diffuseTexture.wrapU = 6;
     texturTerrono.diffuseTexture.wrapV = 6;
@@ -363,7 +364,7 @@ export class EngineService {
    * @param Coluna coluna da matrix number ini 0
    * @param Linha linha da matrix
    */
-  CriarCilindrosPosIni(Coluna, Linha, material: any = false){
+  CriarCilindrosPosIni(Coluna, Linha, material: any = false, Selected = false){
 
     let posX = 35; // move para esqueda direita
     let posY = 1; // move para cima e baixo
@@ -386,6 +387,10 @@ export class EngineService {
 
     if(material != false){
           cylindro1.material = material;
+    }
+
+    if(Selected){
+      this.SeletcCylindro = cylindro1;
     }
 
 
@@ -546,6 +551,7 @@ AnimPonte_Mov_Go_Up(i){
     //Move ponte para pontoVazio
     setTimeout(async () => {
       let anim = this.scene.beginAnimation(i, 0, 200, false);   
+      this.AnimCilindro_Mov_Go_Up(this.SeletcCylindro);
       await anim.waitAsync();
       this.AnimPonte_Mov_Go_Vazio(i)
     });
@@ -567,10 +573,14 @@ AnimPonte_Mov_Go_Vazio(i){
   animationBox.setKeys(keys);
   i.animations = [];
   i.animations.push(animationBox); 
+
+  this.SeletcCylindro.animations = [];
+  this.SeletcCylindro.animations.push(animationBox); 
   // var anim = this.scene.beginAnimation(i, 100, 200, false); 
     //Move ponte para pontoVazio
     setTimeout(async () => {
       let anim = this.scene.beginAnimation(i, 0, 100, false);   
+      let anim2 = this.scene.beginAnimation(this.SeletcCylindro, 0, 100, false);   
       await anim.waitAsync();
       this.AnimPonte_Mov_Go_Donw(i); 
     });
@@ -589,17 +599,118 @@ AnimPonte_Mov_Go_Vazio(i){
   keys.push({ frame: 100, value: fim });
   animationBox.setKeys(keys);
   i.animations = [];
-  i.animations.push(animationBox); 
+  i.animations.push(animationBox);  
   // var anim = this.scene.beginAnimation(i, 100, 200, false); 
     //Move ponte para pontoVazio
     setTimeout(async () => {
       let anim = this.scene.beginAnimation(i, 0, 100, false);   
-      await anim.waitAsync();
-      // this.AnimPonte_Mov_Go_Donw(i); 
+      this.AnimCilindro_Mov_Go_Donw(this.SeletcCylindro);
+      await anim.waitAsync();  
+      setTimeout(async () => { this.AnimPonte_Mov_Go_PontoZero(i);  },1000);
     });
   
   }
 
+  AnimPonte_Mov_Go_PontoZero(i){
+    let animationBox = new BABYLON.Animation("PonteAnimPontoZero", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    let animationBox2 = new BABYLON.Animation("PonteAnimPontoZero2", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    // Animation keys
+    let keys = [];
+    // ponte.position.x = 1;
+    // ponte.position.y = 4;
+    // ponte.position.z = 0;
+ 
+    console.log(this.PonteObj.position);
 
+
+    // let ini = this.PonteObj.position.x;  let fim = ini + 60; let met = fim/2; 
+ 
+    keys.push({ frame: 0, value:  this.PonteObj.position.x });
+    // keys.push({ frame: 50, value: met }); 
+    keys.push({ frame: 100, value: 1 });
+    animationBox.setKeys(keys);
+    i.animations = [];
+    i.animations.push(animationBox); 
+
+    keys.push({ frame: 0, value:  this.PonteObj.position.y });
+    // keys.push({ frame: 50, value: met }); 
+    keys.push({ frame: 100, value: 0 });
+    animationBox2.setKeys(keys); 
+    i.animations.push(animationBox2); 
   
+     
+    // var anim = this.scene.beginAnimation(i, 100, 200, false); 
+      //Move ponte para pontoVazio
+      setTimeout(async () => {
+        let anim = this.scene.beginAnimation(i, 0, 100, false);    
+        await anim.waitAsync(); 
+      });
+    
+    }
+
+
+
+
+
+  /**
+   * MOVIMENTAÇOES DO CILINDRO SELECIONADO
+   * SUBIR E DECER O CILINDO
+   * ANIMAÇÔES  
+   * */
+
+
+  AnimCilindro_Mov_Go_Up(i){ 
+    let animationBox = new BABYLON.Animation("CilAnimation", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    // Animation keys
+    let ini = i.position.y; 
+    let fimUp = ini + 7;
+    let met = fimUp/2;
+    let keys = [];
+    keys.push({ frame: 0, value: ini });
+    keys.push({ frame: 100, value: met }); 
+    keys.push({ frame: 200, value: fimUp });
+    animationBox.setKeys(keys);
+    i.animations = [];
+    i.animations.push(animationBox); 
+    // var anim = this.scene.beginAnimation(i, 100, 200, false); 
+      //Move ponte para pontoVazio
+      setTimeout(async () => {
+        let anim = this.scene.beginAnimation(i, 0, 200, false);   
+        await anim.waitAsync();
+        //this.AnimPonte_Mov_Go_Vazio(i)
+      });
+    
+    }
+
+
+    
+  AnimCilindro_Mov_Go_Donw(i){
+    let animationBox = new BABYLON.Animation("CilAnimation2", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+                                                                    BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    // Animation keys
+    // ponte.position.x = 1;
+    // ponte.position.y = 4;
+    // ponte.position.z = 0;
+
+
+    let keys = [];
+    let ini = this.SeletcCylindro.position.y;  let fim = ini - 7; let met = fim/2;
+    keys.push({ frame: 0, value: ini });
+    keys.push({ frame: 50, value: met }); 
+    keys.push({ frame: 100, value: fim });
+    animationBox.setKeys(keys);
+    i.animations = [];
+    i.animations.push(animationBox);  
+    // var anim = this.scene.beginAnimation(i, 100, 200, false); 
+      //Move ponte para pontoVazio
+      setTimeout(async () => {
+        let anim = this.scene.beginAnimation(i, 0, 100, false);    
+        await anim.waitAsync();
+        // this.AnimPonte_Mov_Go_Donw(i); 
+      });
+    
+    }
 }
